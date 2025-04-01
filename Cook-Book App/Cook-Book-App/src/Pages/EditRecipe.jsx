@@ -1,26 +1,47 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function EditRecipe() {
-    const [recipeData, setRecipeData] = useState({
-        title: '',
-        ingredients: '',
-        instructions: '',
-        time: '',
-        file: null
-    });
-    const navigate = useNavigate();
-    const { id } = useParams();
+    const [recipeData, setRecipeData] = useState({})
+    const navigate = useNavigate()
+    const{id}=useParams()
+
+    useEffect(()=>{
+        const getData=async()=>{
+            await axios.get(`http://localhost:5000/recipe/${id}`)
+            .then(response=>{
+                let res=response.data
+                setRecipeData({
+                    title:res.title,
+                    ingredients:res.ingredients.join(","),
+                    instructions:res.instructions,
+                    time:res.time
+                })
+            })
+        }
+        getData()
+    },[])
 
     const onHandleChange = (e) => {
-        let val = e.target.name === "file" ? e.target.files[0] : e.target.value;
-        setRecipeData(pre => ({ ...pre, [e.target.name]: val }));
-    };
-
+        let val = (e.target.name === "ingredients") ? e.target.value.split(",") : (e.target.name === "file") ? e.target.files[0] : e.target.value
+        setRecipeData(pre => ({ ...pre, [e.target.name]: val }))
+    }
+    const onHandleSubmit = async (e) => {
+        e.preventDefault()
+        console.log(recipeData)
+        await axios.put(`http://localhost:5000/recipe/${id}`, recipeData,{
+            headers:{
+                'Content-Type':'multipart/form-data',
+                'authorization':'bearer '+localStorage.getItem("token")
+            }
+        })
+            .then(() => navigate("/myRecipe"))
+    }
     return (
         <>
             <div className='container'>
-                <form className='form'>
+                <form className='form' onSubmit={onHandleSubmit}>
                     <div className='form-control'>
                         <label>Title</label>
                         <input type="text" className='input' name="title" onChange={onHandleChange} value={recipeData.title}></input>
@@ -31,19 +52,19 @@ export default function EditRecipe() {
                     </div>
                     <div className='form-control'>
                         <label>Ingredients</label>
-                        <textarea className='input-textarea' name="ingredients" rows="5" onChange={onHandleChange} value={recipeData.ingredients}></textarea>
+                        <textarea type="text" className='input-textarea' name="ingredients" rows="5" onChange={onHandleChange} value={recipeData.ingredients}></textarea>
                     </div>
                     <div className='form-control'>
                         <label>Instructions</label>
-                        <textarea className='input-textarea' name="instructions" rows="5" onChange={onHandleChange} value={recipeData.instructions}></textarea>
+                        <textarea type="text" className='input-textarea' name="instructions" rows="5" onChange={onHandleChange} value={recipeData.instructions}></textarea>
                     </div>
                     <div className='form-control'>
                         <label>Recipe Image</label>
                         <input type="file" className='input' name="file" onChange={onHandleChange}></input>
                     </div>
-                    <button type="button">Edit Recipe</button>
+                    <button type="submit">Edit Recipe</button>
                 </form>
             </div>
         </>
-    );
+    )
 }
