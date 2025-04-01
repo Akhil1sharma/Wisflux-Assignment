@@ -8,7 +8,7 @@ export default function Navbar({ searchResults, setSearchResults }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [noResults, setNoResults] = useState(false);
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
 
   let token = localStorage.getItem("token");
   const [isLogin, setIsLogin] = useState(token ? false : true);
