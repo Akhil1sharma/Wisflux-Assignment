@@ -11,7 +11,7 @@ The Cookbook App is a web application that allows users to create, view, and sav
 -   **Recipe Creation**: Users can create recipes with instructions using a Quill Editor.
 -   **Search Functionality**: Users can search for recipes by name.
 -   **Favorites**: Users can save and view their favorite recipes.
--   **Recipe Deletion**: Users can delete recipes they have created.
+-   
 
 ## Technologies Used
 
