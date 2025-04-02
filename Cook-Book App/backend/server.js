@@ -13,9 +13,9 @@ app.use(express.json()); // Parse JSON request body
 app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(express.static("public")); // Serve static files from the "public" folder
 
-// Routes
-app.use("/", require("./routes/user")); // User routes
-app.use("/api/recipes", require("./routes/recipe")); // Recipe routes
+
+app.use("/",require("./routes/user"))
+app.use("/recipe",require("./routes/recipe"))
 
 // Server Configuration
 const PORT = process.env.PORT || 5000;
