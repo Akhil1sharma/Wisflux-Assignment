@@ -1,35 +1,43 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
-import '../styles/AddFoodRecipe.css'; // Add a CSS file for better styling
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import "../styles/AddFoodRecipe.css"; // Add a CSS file for better styling
 
 export default function AddFoodRecipe() {
     const [recipeData, setRecipeData] = useState({
-        title: '',
-        time: '',
-        ingredients: '',
-        instructions: '',
-        file: null
+        title: "",
+        time: "",
+        ingredients: "",
+        instructions: "",
+        file: null,
     });
 
     const navigate = useNavigate();
 
     // Handle Quill Editor Changes
     const handleQuillChange = (field, content) => {
-        setRecipeData(prev => ({ ...prev, [field]: content }));
+        setRecipeData((prev) => ({ ...prev, [field]: content }));
     };
 
     // Handle File Input
     const handleFileChange = (e) => {
-        setRecipeData(prev => ({ ...prev, file: e.target.files[0] }));
+        const file = e.target.files[0];
+        if (file) {
+            setRecipeData((prev) => ({ ...prev, file }));
+        }
     };
 
     // Submit Form
     const onHandleSubmit = async (e) => {
         e.preventDefault();
-        console.log(recipeData);
+
+        // Check if required fields are filled
+        if (!recipeData.title.trim() || !recipeData.ingredients.trim() || !recipeData.instructions.trim()) {
+            alert("Title, Ingredients, and Instructions are required!");
+            return;
+        }
 
         const formData = new FormData();
         formData.append("title", recipeData.title);
@@ -40,19 +48,28 @@ export default function AddFoodRecipe() {
             formData.append("file", recipeData.file);
         }
 
-        await axios.post("http://localhost:5000/recipe", formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'authorization': 'bearer ' + localStorage.getItem("token")
+        try {
+            const response =  await axios.post("http://localhost:5000/recipe", recipeData,{
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+            });
+
+            if (response.status === 200) {
+                alert("Recipe added successfully!");
+                navigate("/");
             }
-        }).then(() => navigate("/"));
+        } catch (error) {
+            console.error("Error submitting recipe:", error);
+            alert("Failed to add recipe. Please try again.");
+        }
     };
 
     return (
         <div className="recipe-container">
             <h2>Add Your Recipe</h2>
             <form className="recipe-form" onSubmit={onHandleSubmit}>
-                
                 {/* Title */}
                 <div className="form-control">
                     <label>Title</label>
@@ -62,7 +79,12 @@ export default function AddFoodRecipe() {
                 {/* Time */}
                 <div className="form-control">
                     <label>Time</label>
-                    <ReactQuill value={recipeData.time} onChange={(content) => handleQuillChange("time", content)} />
+                    <input
+                        type="text"
+                        value={recipeData.time}
+                        onChange={(e) => setRecipeData({ ...recipeData, time: e.target.value })}
+                        placeholder="e.g., 30 minutes"
+                    />
                 </div>
 
                 {/* Ingredients */}
@@ -83,7 +105,9 @@ export default function AddFoodRecipe() {
                     <input type="file" className="input-file" name="file" onChange={handleFileChange} />
                 </div>
 
-                <button type="submit" className="submit-btn">Add Recipe</button>
+                <button type="submit" className="submit-btn">
+                    Add Recipe
+                </button>
             </form>
         </div>
     );
