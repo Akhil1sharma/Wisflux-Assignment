@@ -8,15 +8,11 @@ const PORT=process.env.PORT || 3000
 connectDb()
 
 app.use(express.json())
-app.use(cors());
+app.use(cors())
 app.use(express.static("public"))
 
 app.use("/",require("./routes/user"))
 app.use("/recipe",require("./routes/recipe"))
-
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
 
 app.listen(PORT,(err)=>{
     console.log(`app is listening on port ${PORT}`)
