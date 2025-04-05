@@ -9,12 +9,12 @@ import EditRecipe from "./pages/EditRecipe";
 import RecipeDetails from "./pages/RecipeDetails";
 
 // API Base URL
-const API_URL = "http://localhost:5000/api";
+const API_URL = "http://localhost:5000";
 
 // Fetch all recipes
 const getAllRecipes = async () => {
   try {
-    const res = await axios.get(`${API_URL}/recipes`);
+    const res = await axios.get(`${API_URL}/recipe/recipes`);
     return res.data || [];
   } catch (error) {
     console.error("Error fetching recipes:", error);
@@ -51,7 +51,6 @@ const getRecipe = async ({ params }) => {
 export default function App() {
   const [searchResults, setSearchResults] = useState([]);
 
-  // Move the router configuration inside the App component
   const router = createBrowserRouter([
     {
       path: "/",
@@ -62,12 +61,34 @@ export default function App() {
         />
       ),
       children: [
-        { path: "/", element: <Home searchResults={searchResults}/>, loader: getAllRecipes },
-        { path: "/myRecipe", element: <Home />, loader: getMyRecipes },
-        { path: "/favRecipe", element: <Home />, loader: getFavRecipes },
-        { path: "/addRecipe", element: <AddFoodRecipe /> },
-        { path: "/editRecipe/:id", element: <EditRecipe /> },
-        { path: "/recipe/:id", element: <RecipeDetails />, loader: getRecipe },
+        {
+          path: "/",
+          element: <Home searchResults={searchResults} />,
+          loader: getAllRecipes,
+        },
+        {
+          path: "/myRecipe",
+          element: <Home />,
+          loader: getMyRecipes,
+        },
+        {
+          path: "/favRecipe",
+          element: <Home />,
+          loader: getFavRecipes,
+        },
+        {
+          path: "/addRecipe",
+          element: <AddFoodRecipe />,
+        },
+        {
+          path: "/editRecipe/:id",
+          element: <EditRecipe />,
+        },
+        {
+          path: "/recipe/:id",
+          element: <RecipeDetails />,
+          loader: getRecipe,
+        },
       ],
     },
   ]);
