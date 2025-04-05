@@ -91,7 +91,8 @@ The Cookbook App is a web application that allows users to create, view, and sav
 ### Recipe Creation
 ![Recipe Creation](https://pplx-res.cloudinary.com/image/upload/v1743528523/user_uploads/VXzCbQlPvDPulod/Screenshot-2025-04-01-222253.jpg)
 
-https://github.com/Akhil1sharma/Wisflux-Assignment/commit/7cef02cf05869ef1b6c3a3d25241f43a60b91464#diff-f02422e6a80447caad765df7542c7f6a54af4d45a8f7d5df5aa7912cfe595cba
+### videos of the project
+https://drive.google.com/file/d/1BEq8nbMWHkyUJ3JdAF2A6vpyhSdCoJ4U/view?usp=sharing
 
 
 
