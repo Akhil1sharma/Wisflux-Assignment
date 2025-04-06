@@ -65,7 +65,7 @@ const bcrypt = require('bcrypt');
 
 // After
 const bcrypt = require('bcryptjs');
- ```
+ 
 
 ## Usage Instructions
 
