@@ -57,7 +57,8 @@ The Cookbook App is a web application that allows users to create, view, and sav
     npm uninstall bcrypt
     npm install bcryptjs
 
-Replace all instances of bcrypt in your code with bcryptjs:
+## Replace all instances of bcrypt in your code with bcryptjs:
+
 which is present in the userfile controllers folder
 // Before
 const bcrypt = require('bcrypt');
