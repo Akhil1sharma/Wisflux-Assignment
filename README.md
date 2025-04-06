@@ -47,6 +47,24 @@ The Cookbook App is a web application that allows users to create, view, and sav
     cd backend
     npm start
     ```
+6. ** Issue occur while running Backend**
+      ```
+      npm rebuild bcrypt
+
+     rm -rf node_modules package-lock.json
+     npm install
+
+    npm uninstall bcrypt
+    npm install bcryptjs
+
+Replace all instances of bcrypt in your code with bcryptjs:
+which is present in the userfile controllers folder
+// Before
+const bcrypt = require('bcrypt');
+
+// After
+const bcrypt = require('bcryptjs');
+ ```
 
 ## Usage Instructions
 
